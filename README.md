@@ -14,7 +14,7 @@ Newspaper System is a comprehensive in-game newspaper management system designed
 
 ## Installation
 1. **Download the Resource:**
-   - Clone or download the OutWest Newspaper System resource and place it in your RedM server's resource directory.
+   - Clone or download the  Newspaper System resource and place it in your RedM server's resource directory.
 
 2. **Dependencies:**
    - Ensure that you have the following dependencies installed and properly configured:
