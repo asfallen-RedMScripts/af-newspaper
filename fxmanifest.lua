@@ -7,7 +7,7 @@ lua54 'yes'
 ui_page 'nui/index.html'
 
 author 'afoolasfallen'
-description 'OutWest Newspaper System'
+description 'Af Newspaper'
 version '1.0'
 
 
