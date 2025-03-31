@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Blackwater Gazette</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Newspaper Container -->
+    <div class="newspaper-container" id="newspaperContainer">
+        <!-- Close Button -->
+        <button class="close-button" onclick="closeNewspaperNUI()">X</button>
+
+        <!-- Newspaper Header -->
+        <div class="gazette-header">
+            <h1>Blackwater Gazetesi</h1>
+            <h2>Sınır Boyunca Hakikat ve Adalet</h2>
+            <p class="subtitle">1877'de Kuruldu - West Elizabeth Matbaacılık Şirketi Tarafından Yayınlanmaktadır</p>
+        </div>
+        
+        <!-- Article Headline -->
+        <h2 id="articleTitle" class="main-headline"></h2>
+
+        <!-- Image (optional) -->
+        <img id="articleImage" src="" alt="Gazette Illustration" style="display: none;">
+
+        <!-- Article Content -->
+        <div id="articleBody" class="content"></div>
+
+        <!-- Footer with Date -->
+        <div class="gazette-footer">
+            <p id="articleDate"></p> <!-- articleDate elementi eklendi -->
+        </div>
+    </div>
+
+    <!-- Reporter Panel -->
+    <div class="reporter-panel" id="reporterPanel" style="display: none;">
+        <h2>Gazeteci Paneli</h2>
+        <!-- Eski haberlerin listeleneceği alan -->
+        <div id="oldNewspapers">
+            <!-- loadOldNewspapers() fonksiyonu buraya haber kartlarını ekleyecek -->
+        </div>
+        <!-- Yeni haber ekleme formu -->
+        <div class="new-story">
+            <input type="text" id="newTitle" placeholder="Başlık">
+            <textarea id="newBody" placeholder="Haber içeriği"></textarea>
+            <input type="text" id="newImage" placeholder="Resim URL">
+            <input type="hidden" id="newVersion" value="">
+            <button onclick="publishNewStory()">Haber Yayınla</button>
+        </div>
+        <button onclick="closeNewspaperNUI()">Paneli Kapat</button>
+    </div>
+
+    <!-- Kopya Al Pop-up -->
+    <div id="copyPopup" class="copy-popup" style="display: none;">
+        <h3>Kopya Sayısı</h3>
+        <p>Kaç adet gazete kopyalamak istiyorsunuz?</p>
+        <input type="number" id="copyCount" placeholder="Kopya Sayısı">
+        <div class="popup-buttons">
+            <button onclick="confirmCopy()" class="confirm">ONAYLA</button>
+            <button onclick="closeCopyPopup()" class="cancel">İPTAL</button>
+        </div>
+    </div>
+
+     <!-- Pop-up için karartma alanı (overlay) -->
+     <div id="popupOverlay" class="popup-overlay"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

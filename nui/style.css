@@ -1,0 +1,388 @@
+@font-face {
+    font-family: 'Chinese Rock';
+    src: url('ChineseRock.woff2') format('woff2'),
+         url('ChineseRock.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+    width: 100%;
+    height: 100%;
+    font-family: 'Chinese Rock', 'Times New Roman', serif;
+    color: #2c1d0c;
+    /* Disable text selection for entire document */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    overflow: hidden; /* Hata düzeltildi */
+}
+
+/* Ensure any container elements are also transparent */
+#root, main, div:not(.newspaper-container):not(.gazette-header):not(.content):not(.gazette-footer):not(.reporter-panel) {
+    background: transparent !important;
+}
+
+/* Newspaper Container - Western Style */
+.newspaper-container {
+    display: none;
+    width: 700px;
+    height: 900px; /* Gazetenin sabit yüksekliği */
+    margin: 20px auto;
+    position: relative;
+    background: url("old-paper-texture.png") no-repeat center center, #f4e9d5;
+    background-size: cover;
+    border: 6px double #3d2b1f;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    overflow-y: auto; /* Tüm gazeteyi kaydırılabilir yap */
+    pointer-events: auto; /* Scroll bar'ın çalışması için etkileşimi etkinleştir */
+    user-select: none; /* Metin seçimini engelle */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    scroll-padding: auto;
+}
+
+/* Close button needs pointer events */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #3d2b1f;
+    border: 2px solid #d9c7a7;
+    font-size: 20px;
+    color: #f4e9d5;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto; /* Enable pointer events for close button */
+    z-index: 100; /* Ensure button is above other elements */
+}
+
+.close-button:hover {
+    background: #573e1f;
+}
+
+/* Newspaper Header - Western Saloon Style */
+.gazette-header {
+    text-align: center;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #3d2b1f;
+    padding-bottom: 8px;
+}
+
+.gazette-header h1 {
+    font-size: 42px;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 1px 1px 0 #d9c7a7;
+    font-family: 'Chinese Rock', serif;
+}
+
+.gazette-header h2 {
+    font-size: 18px;
+    margin: 6px 0;
+    font-style: italic;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: #573e1f;
+    font-style: italic;
+    margin-top: 3px;
+}
+
+/* Main Headline - Western Style */
+.main-headline {
+    font-size: 28px;
+    text-align: center;
+    text-transform: uppercase;
+    margin: 15px 0;
+    font-weight: bold;
+    text-shadow: 0.5px 0.5px 0 #d9c7a7;
+    border-bottom: 1px solid #573e1f;
+    padding-bottom: 8px;
+}
+
+/* Article Image - Vintage Style */
+#articleImage {
+    display: block;
+    max-width: 80%;
+    margin: 0 auto 15px auto;
+    border: 3px solid #3d2b1f;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+    filter: sepia(20%);
+}
+
+/* Content Text - Full width single column layout */
+.content {
+    font-size: 16px;
+    line-height: 1.7;
+    text-align: justify;
+    margin: 0 15px;
+    padding: 0 10px;
+    column-count: 1;
+    position: relative;
+    text-indent: 30px;
+    word-wrap: break-word; /* Uzun kelimeleri böl */
+    white-space: normal; /* Taşan yazıları otomatik alt satıra al */
+}
+
+/* Add spacing between paragraphs */
+.content p {
+    margin-bottom: 0.8em;
+}
+
+/* Footer with Date - Bottom Right Positioning */
+.gazette-footer {
+    text-align: right;
+    font-size: 14px;
+    font-style: italic;
+    color: #573e1f;
+    margin-top: 20px; /* Tarih ile içerik arasında boşluk bırak */
+    padding-bottom: 20px; /* Tarih ile gazetenin altı arasında boşluk bırak */
+}
+
+/* Reporter Panel - RDR Office Style */
+.reporter-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background: url("old-paper-texture.png"), #e5d9c3;
+    border: 3px solid #573e1f;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.6);
+    font-family: 'Chinese Rock', serif;
+    pointer-events: auto;
+    z-index: 100; /* Panelin z-index değeri */
+}
+
+
+.reporter-panel h2 {
+    text-align: center;
+    border-bottom: 2px solid #573e1f;
+    padding-bottom: 5px;
+    margin-top: 0;
+}
+/* Form Elements - Western Style */
+input, textarea, button {
+    font-family: 'Chinese Rock', serif;
+    background: #f8f0e3;
+    border: 2px solid #573e1f;
+    padding: 5px;
+    margin: 5px 0;
+    pointer-events: auto; /* Enable interactions for form elements */
+}
+
+button {
+    background: #573e1f;
+    color: #f4e9d5;
+    padding: 8px 15px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    pointer-events: auto; /* Enable interactions for buttons */
+}
+
+button:hover {
+    background: #2c1d0c;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+/* Özel scroll bar (Webkit tarayıcıları için) */
+.newspaper-container::-webkit-scrollbar {
+    width: 8px; /* Scroll bar genişliği */
+}
+
+.newspaper-container::-webkit-scrollbar-track {
+    background: #c09b7f; /* Scroll bar arka plan rengi */
+    border-radius: 4px;
+}
+
+.newspaper-container::-webkit-scrollbar-thumb {
+    background: #573e1f; /* Scroll bar rengi */
+    border-radius: 4px;
+}
+
+.newspaper-container::-webkit-scrollbar-thumb:hover {
+    background: #3d2b1f; /* Scroll bar hover rengi */
+}
+
+/* Reporter Panel - Eski Haber Listesi */
+#oldNewspapers {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #573e1f;
+    border-radius: 3px;
+}
+
+.reporter-panel .new-story {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #573e1f;
+    border-radius: 5px;
+}
+
+.reporter-panel .new-story input[type="text"],
+.reporter-panel .new-story textarea,
+.reporter-panel .new-story input[type="hidden"] {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #573e1f;
+    border-radius: 3px;
+}
+
+.reporter-panel .new-story textarea {
+    height: 150px;  /* Yeterince geniş bir metin alanı */
+    resize: vertical;
+}
+
+.reporter-panel .new-story button {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    background: #573e1f;
+    color: #f4e9d5;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+}
+
+.reporter-panel .new-story button:hover {
+    background: #2c1d0c;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+.popup-overlay {
+    position: fixed;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    background: #000000;  /* Completely solid black background */
+    display: none;
+    z-index: 1999;
+}
+
+/* Reset popup to completely solid background */
+.copy-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background: #2c1d0c; /* Completely solid dark brown background */
+    border: 3px solid #573e1f;
+    padding: 20px;
+    box-shadow: 0 0 15px #000000; /* Solid black shadow */
+    font-family: 'Chinese Rock', serif;
+    pointer-events: auto;
+    z-index: 2000;
+    display: none;
+    border-radius: 6px;
+    /* Remove any potential background images or patterns */
+    background-image: none !important;
+    background-blend-mode: normal;
+    /* Force complete opacity */
+    opacity: 1 !important;
+}
+
+/* Reset and ensure other elements are fully opaque */
+.copy-popup * {
+    opacity: 1 !important;
+}
+
+.copy-popup h3 {
+    text-align: center;
+    border-bottom: 2px solid #573e1f;
+    padding-bottom: 8px;
+    margin-top: 0;
+    color: #d9c7a7;
+    font-size: 22px;
+    letter-spacing: 1px;
+    text-shadow: none; /* Remove text shadow */
+    background: transparent;
+}
+
+.copy-popup p {
+    text-align: center;
+    color: #d9c7a7;
+    font-size: 16px;
+    margin: 15px 0;
+    text-shadow: none; /* Remove text shadow */
+    background: transparent;
+}
+
+#copyCount {
+    width: 100%;
+    padding: 8px;
+    background: #3d2b1f; /* Solid background */
+    border: 1px solid #573e1f;
+    color: #f4e9d5;
+    font-family: 'Chinese Rock', serif;
+    font-size: 16px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.copy-popup button {
+    width: 48%;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Chinese Rock', serif;
+    transition: all 0.3s;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.copy-popup button.confirm {
+    background: #573e1f;
+    color: #f4e9d5;
+    border: 1px solid #6e5436;
+}
+
+.copy-popup button.cancel {
+    background: #3d2b1f;
+    color: #f4e9d5;
+    border: 1px solid #573e1f;
+}
+
+.copy-popup button:hover {
+    box-shadow: 0 0 8px rgba(215, 170, 100, 0.6);
+    transform: translateY(-2px);
+}
+.reporter-panel.popup-open {
+    pointer-events: none; /* Paneldeki etkileşimi devre dışı bırak */
+}
