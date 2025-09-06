@@ -7,21 +7,24 @@ lua54 'yes'
 ui_page 'nui/index.html'
 
 author 'afoolasfallen'
-description 'Af Newspaper'
-version '1.0'
+description 'Af Newspaper  (RSG-Core & VORP)'
+version '2.0'
 
+shared_scripts {
+    'config.lua',
+    'framework.lua'
+}
 
 client_scripts {
-    'client.lua',
-    'config.lua'
+    'client/*.lua'
 }
 
 server_scripts {
-    'server.lua',
-    'config.lua'
+    '@oxmysql/lib/MySQL.lua',
+    'server/*.lua'
 }
-files {
 
+files {
     'nui/old-paper-texture.png',
     'nui/newspaper.png',
     'nui/index.html',

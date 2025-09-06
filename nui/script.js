@@ -1,13 +1,27 @@
+// script.js - Dual Framework Support
 let currentImageUrl = '';
 const debug = false;
 let reporterPanelWasVisible = false;
+let currentFramework = 'rsg-core'; // Default framework
+
+window.addEventListener('message', (event) => {
+    if (event.data.framework) {
+        currentFramework = event.data.framework;
+
+        if(debug)
+                    console.log('Framework detected:', currentFramework);
+    }
+});
+
 // Popup Aç/Kapat
 function openImagePopup() {
     document.getElementById('imagePopup').style.display = 'block';
 }
+
 function closePopup() {
     document.getElementById('imagePopup').style.display = 'none';
 }
+
 function formatWesternDate() {
     const months = [
         "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
@@ -21,7 +35,6 @@ function formatWesternDate() {
     
     return `${day} ${month} ${year}`;
 }
-
 
 function loadNewspaperContent(content) {
     const articleBody = document.getElementById('articleBody');
@@ -57,7 +70,6 @@ document.addEventListener('keyup', function (event) {
 
 // Gazeteyi kapatma (X veya ESC)
 function closeNewspaperNUI() {
-
     closeCopyPopup();
     
     fetch(`https://${GetParentResourceName()}/closeNewspaper`, {
@@ -108,6 +120,11 @@ function publishNewStory() {
     }).then(() => {
         // İşlem bitince eski gazeteleri listeleyin
         loadOldNewspapers();
+        
+        // Form alanlarını temizle
+        document.getElementById('newTitle').value = '';
+        document.getElementById('newBody').value = '';
+        document.getElementById('newImage').value = '';
     }).catch(err => console.error('Yeni gazete ekleme hatası:', err));
 }
 
@@ -119,24 +136,38 @@ function loadOldNewspapers() {
     })
     .then(res => res.json())
     .then(data => {
-        const oldNewsDiv = document.getElementById('oldNewspapers');
-        oldNewsDiv.innerHTML = ''; // Temizle
-
-        data.forEach(story => {
-            const storyDiv = document.createElement('div');
-            storyDiv.style.borderBottom = '1px solid #aaa';
-            storyDiv.style.marginBottom = '5px';
-            storyDiv.innerHTML = `
-                <strong>ID: ${story.id}</strong><br>
-                <span>Başlık: ${story.title}</span><br>
-                <span>Tarih: ${story.date}</span><br>
-                <button onclick="viewNewspaper(${story.id})">Görüntüle</button>
-                <button onclick="copyNewspaper(${story.id})">Kopya Al</button>
-            `;
-            oldNewsDiv.appendChild(storyDiv);
-        });
+        // VORP için data kontrolü
+        if (!data || data.length === 0) {
+            // VORP event bazlı olduğu için biraz bekleyip tekrar dene
+            setTimeout(() => {
+                processOldNewspapers(window.cachedStories || []);
+            }, 500);
+            return;
+        }
+        processOldNewspapers(data);
     })
     .catch(err => console.error('Eski gazeteleri listeleme hatası:', err));
+}
+
+function processOldNewspapers(data) {
+    const oldNewsDiv = document.getElementById('oldNewspapers');
+    if (!oldNewsDiv) return;
+    
+    oldNewsDiv.innerHTML = ''; // Temizle
+
+    data.forEach(story => {
+        const storyDiv = document.createElement('div');
+        storyDiv.style.borderBottom = '1px solid #aaa';
+        storyDiv.style.marginBottom = '5px';
+        storyDiv.innerHTML = `
+            <strong>ID: ${story.id}</strong><br>
+            <span>Başlık: ${story.title}</span><br>
+            <span>Tarih: ${story.date}</span><br>
+            <button onclick="viewNewspaper(${story.id})">Görüntüle</button>
+            <button onclick="copyNewspaper(${story.id})">Kopya Al</button>
+        `;
+        oldNewsDiv.appendChild(storyDiv);
+    });
 }
 
 function viewNewspaper(newspaperId) {
@@ -148,30 +179,31 @@ function viewNewspaper(newspaperId) {
     });
 }
 
-
-     // Set up newspaper when loaded
-     document.addEventListener('DOMContentLoaded', function() {
-        // Set the date
-        document.getElementById('articleDate').textContent = formatWesternDate();
-        
-        // Prevent text selection throughout the document
-        document.addEventListener('selectstart', function(e) {
-            e.preventDefault();
-            return false;
-        });
-        
-        // Prevent context menu (right-click)
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
-        });
+// Set up newspaper when loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Set the date
+    document.getElementById('articleDate').textContent = formatWesternDate();
+    
+    // Prevent text selection throughout the document
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
     });
+    
+    // Prevent context menu (right-click)
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+});
 
-
-
-// NUI mesajlarını dinle
 // NUI mesajlarını dinle
 window.addEventListener('message', (event) => {
+    // Framework bilgisini güncelle
+    if (event.data.framework) {
+        currentFramework = event.data.framework;
+    }
+    
     if (event.data.action === 'openNewspaper') {
         // Gazete verisini al
         const news = event.data.stories && event.data.stories[0];
@@ -191,7 +223,7 @@ window.addEventListener('message', (event) => {
         loadNewspaperContent(news.body || '');
 
         // Resmi yükle (eğer varsa)
-        if (news.image && news.image !== "") {
+        if (news.image && news.image !== "" && news.image !== "resim_yok.png") {
             const articleImage = document.getElementById('articleImage');
             articleImage.src = news.image;
             articleImage.style.display = 'block';
@@ -221,6 +253,11 @@ window.addEventListener('message', (event) => {
         // Eski haberleri listeleyin
         loadOldNewspapers();
     }
+    else if (event.data.action === 'receiveAllStories') {
+        // VORP için gelen story verilerini işle
+        window.cachedStories = event.data.stories;
+        processOldNewspapers(event.data.stories);
+    }
 });
 
 function copyNewspaper(newspaperId) {
@@ -236,10 +273,10 @@ function copyNewspaper(newspaperId) {
         copyPopup.style.top = '50%';
         copyPopup.style.left = '50%';
         copyPopup.style.transform = 'translate(-50%, -50%)';
-        copyPopup.style.background = '#f4e9d5';
+        copyPopup.style.background = '#2c1d0c';
         copyPopup.style.padding = '20px';
         copyPopup.style.border = '3px solid #573e1f';
-        copyPopup.style.boxShadow = '0 0 10px rgba(0,0,0,0.6)';
+        copyPopup.style.boxShadow = '0 0 15px #000000';
         
         // Eğer reporter panel görünüyorsa, saklayıp gizleyelim
         if (reporterPanel) {
@@ -278,6 +315,7 @@ function closeCopyPopup() {
         if (debug) console.log("closeCopyPopup: Reporter panel yeniden gösterildi.");
     }
 }
+
 function confirmCopy() {
     const copyPopup = document.getElementById('copyPopup');
     if (!copyPopup) {
