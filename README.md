@@ -1,4 +1,4 @@
-# Newspaper System for RedM [RSG-CORE]
+# Newspaper System for RedM [RSG,VORP]
 
 ## Overview
 Newspaper System is a comprehensive in-game newspaper management system designed for RedM servers. It allows players to read newspapers, view dynamic stories, and—if they are assigned the reporter role—publish new articles. The system integrates with `rsg-core` and uses a MySQL database (via `oxmysql`) to manage newspaper data, including versioning and unique item identification.
